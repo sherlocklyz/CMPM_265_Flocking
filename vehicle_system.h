@@ -8,6 +8,8 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Main.hpp>
 
+class Vehicle;
+
 class VehicleSystem {
 public:
 	VehicleSystem();
@@ -15,4 +17,7 @@ public:
 
 	void update();
 	void render(sf::RenderWindow& window);
+
+private:
+	std::vector<Vehicle*> v;
 };
