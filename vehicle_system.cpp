@@ -3,7 +3,8 @@
 
 VehicleSystem::VehicleSystem()
 {
-	
+	Vehicle* vehicle = new Vehicle;
+	v.push_back(vehicle);
 }
 
 VehicleSystem::~VehicleSystem()
@@ -17,9 +18,15 @@ VehicleSystem::~VehicleSystem()
 	}
 }
 
-void VehicleSystem::update()
+void VehicleSystem::update(sf::RenderWindow& window)
 {
-
+	sf::Vector2i mousePosI = sf::Mouse::getPosition(window);
+	sf::Vector2f mousePos = sf::Vector2f(float(mousePosI.x), float(mousePosI.y));
+	for (int i = 0; i < v.size(); i++)
+	{
+		v[i]->setTarget(mousePos);
+		v[i]->update();
+	}
 }
 
 void VehicleSystem::render(sf::RenderWindow& window)

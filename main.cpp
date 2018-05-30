@@ -32,7 +32,7 @@ int main()
 
 		while (accumulatedTime >= 1.0f / 60.0f)
 		{
-			vs->update();
+			vs->update(window);
 			accumulatedTime -= 1.0f / 60.0f;
 		}
 		vs->render(window);

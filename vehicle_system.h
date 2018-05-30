@@ -15,7 +15,7 @@ public:
 	VehicleSystem();
 	~VehicleSystem();
 
-	void update();
+	void update(sf::RenderWindow& window);
 	void render(sf::RenderWindow& window);
 
 private:
