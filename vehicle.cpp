@@ -16,8 +16,24 @@ Vehicle::Vehicle()
 	acc = sf::Vector2f(0, 0);
 	vel = sf::Vector2f((rand() % 101 - 50) / 10, (rand() % 101 - 50) / 10);
 
-	maxVel = 6.0f;
-	maxForce = 0.1f;
+	maxVel = 12.0f;
+	maxForce = 0.5f;
+}
+
+Vehicle::Vehicle(sf::Vector2f pos)
+{
+	shape = new sf::ConvexShape;
+	shape->setPointCount(3);
+	shape->setPoint(0, sf::Vector2f(30, 0));
+	shape->setPoint(1, sf::Vector2f(0, 10));
+	shape->setPoint(2, sf::Vector2f(0, -10));
+	shape->setFillColor(sf::Color::White);
+	shape->setPosition(pos);
+	acc = sf::Vector2f(0, 0);
+	vel = sf::Vector2f((rand() % 101 - 50) / 10, (rand() % 101 - 50) / 10);
+
+	maxVel = 12.0f;
+	maxForce = 0.5f;
 }
 
 Vehicle::~Vehicle()
