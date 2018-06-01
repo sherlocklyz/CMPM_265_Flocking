@@ -14,7 +14,7 @@ Vehicle::Vehicle()
 	shape->setFillColor(sf::Color::White);
 	shape->setPosition(rand() % 1280, rand() % 720);
 	acc = sf::Vector2f(0, 0);
-	vel = sf::Vector2f(0, 0);
+	vel = sf::Vector2f((rand() % 101 - 50) / 10, (rand() % 101 - 50) / 10);
 
 	maxVel = 6.0f;
 	maxForce = 0.1f;
@@ -29,12 +29,6 @@ Vehicle::~Vehicle()
 void Vehicle::update()
 {
 	sf::Vector2f pos = shape->getPosition();
-	sf::Vector2f desired = target - pos;
-	changeLength(desired, maxVel);
-
-	sf::Vector2f steer = desired - vel;
-	limit(steer, maxForce);
-	acc = steer;
 
 	vel += acc;
 	limit(vel, maxVel);
@@ -51,9 +45,15 @@ void Vehicle::render(sf::RenderWindow& window)
 	window.draw(*shape);
 }
 
-void Vehicle::setTarget(sf::Vector2f t)
+void Vehicle::applyForce(sf::Vector2f t)
 {
-	this->target = t;
+	sf::Vector2f pos = shape->getPosition();
+	sf::Vector2f desired = t - pos;
+	changeLength(desired, maxVel);
+
+	sf::Vector2f steer = desired - vel;
+	limit(steer, maxForce);
+	acc = steer;
 }
 
 void inScreen(sf::Vector2f& v, float x, float y)

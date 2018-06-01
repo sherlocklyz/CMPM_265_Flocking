@@ -16,8 +16,7 @@ public:
 	void update();
 	void render(sf::RenderWindow& window);
 
-
-	void setTarget(sf::Vector2f target);
+	void applyForce(sf::Vector2f target);
 
 	sf::ConvexShape* shape;
 
@@ -27,6 +26,8 @@ private:
 	sf::Vector2f acc;
 	sf::Vector2f vel;
 	sf::Vector2f target;
+
+
 	
 	float maxVel;
 	float maxForce;
