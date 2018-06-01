@@ -23,8 +23,8 @@ public:
 	void update(sf::RenderWindow& window);
 	void render(sf::RenderWindow& window);
 
-	bool isMousePressed;
-	bool isSpacePressed;
+	bool isUpPressed;
+	bool isDownPressed;
 
 private:
 	std::vector<Vehicle*> v;
@@ -34,6 +34,6 @@ private:
 	void bucket_add(sf::Vector2i b, Vehicle* vehicle);
 	void bucket_remove(sf::Vector2i b, Vehicle* vehicle);
 
-	void createVehicle(sf::Vector2f pos);
+	void createVehicle();
 	void removeVehicle();
 };

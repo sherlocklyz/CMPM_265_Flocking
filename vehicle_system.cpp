@@ -24,17 +24,17 @@ void VehicleSystem::update(sf::RenderWindow& window)
 {
 	sf::Vector2i mousePosI = sf::Mouse::getPosition(window);
 	sf::Vector2f mousePos = sf::Vector2f(float(mousePosI.x), float(mousePosI.y));
-	if (isMousePressed)
+	if (isUpPressed)
 	{
-		createVehicle(mousePos);
-		isMousePressed = false;
-		std::cout << "1";
+		createVehicle();
+		isUpPressed = false;
+		std::cout << v.size();
 	}
-	if (isSpacePressed)
+	if (isDownPressed)
 	{
 		removeVehicle();
-		isSpacePressed = false;
-		std::cout << "2";
+		isDownPressed = false;
+		std::cout << v.size();
 	}
 
 	for (int i = 0; i < v.size(); i++)
@@ -42,7 +42,7 @@ void VehicleSystem::update(sf::RenderWindow& window)
 		Vehicle * vehicle = v[i];
 		sf::Vector2i curBucket = getBucket(vehicle->shape->getPosition());
 
-		//vehicle->applyForce(mousePos);
+		vehicle->applyForce(mousePos);
 		vehicle->update();
 
 		sf::Vector2i newBucket = getBucket(vehicle->shape->getPosition());
@@ -100,9 +100,9 @@ void VehicleSystem::bucket_remove(sf::Vector2i b, Vehicle* v)
 	}
 }
 
-void VehicleSystem::createVehicle(sf::Vector2f pos)
+void VehicleSystem::createVehicle()
 {
-	Vehicle* vehicle = new Vehicle(pos);
+	Vehicle* vehicle = new Vehicle();
 	v.push_back(vehicle);
 }
 

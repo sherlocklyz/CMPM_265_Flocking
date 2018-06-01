@@ -28,11 +28,10 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 
-			if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
-				vs->isMousePressed = true;
-
-			if (event.type == event.KeyReleased && event.key.code == sf::Keyboard::Space)
-				vs->isSpacePressed = true;
+			if (event.type == event.KeyPressed && event.key.code == sf::Keyboard::Up)
+				vs->isUpPressed = true;
+			if (event.type == event.KeyPressed && event.key.code == sf::Keyboard::Down)
+				vs->isDownPressed = true;
 		}
 		float dt = clock.restart().asSeconds();
 		accumulatedTime += dt;

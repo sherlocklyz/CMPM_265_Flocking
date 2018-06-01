@@ -11,7 +11,6 @@
 class Vehicle {
 public:
 	Vehicle();
-	Vehicle(sf::Vector2f pos);
 	~Vehicle();
 
 	void update();
