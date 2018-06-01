@@ -16,7 +16,8 @@ public:
 	void update();
 	void render(sf::RenderWindow& window);
 
-	void applyForce(sf::Vector2f target);
+	sf::Vector2f createForce(sf::Vector2f t);
+	void applyForce(sf::Vector2f f);
 
 	sf::ConvexShape* shape;
 

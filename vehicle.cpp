@@ -47,7 +47,7 @@ void Vehicle::render(sf::RenderWindow& window)
 	window.draw(*shape);
 }
 
-void Vehicle::applyForce(sf::Vector2f t)
+sf::Vector2f Vehicle::createForce(sf::Vector2f t)
 {
 	sf::Vector2f pos = shape->getPosition();
 	sf::Vector2f desired = t - pos;
@@ -55,7 +55,12 @@ void Vehicle::applyForce(sf::Vector2f t)
 
 	sf::Vector2f steer = desired - vel;
 	limit(steer, maxForce);
-	acc = steer;
+	return steer;
+}
+
+void Vehicle::applyForce(sf::Vector2f f)
+{
+	acc = f;
 }
 
 void inScreen(sf::Vector2f& v, float x, float y)

@@ -42,7 +42,8 @@ void VehicleSystem::update(sf::RenderWindow& window)
 		Vehicle * vehicle = v[i];
 		sf::Vector2i curBucket = getBucket(vehicle->shape->getPosition());
 
-		vehicle->applyForce(mousePos);
+		sf::Vector2f force = vehicle->createForce(mousePos);
+		vehicle->applyForce(force);
 		vehicle->update();
 
 		sf::Vector2i newBucket = getBucket(vehicle->shape->getPosition());
