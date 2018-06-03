@@ -48,3 +48,14 @@ float getRotation(sf::Vector2f v)
 	}
 }
 
+void inScreen(sf::Vector2f& v, float x, float y)
+{
+	if (v.x < 0)
+		v.x += x;
+	if (v.x > x)
+		v.x -= x;
+	if (v.y < 0)
+		v.y += y;
+	if (v.y > y)
+		v.y -= y;
+}

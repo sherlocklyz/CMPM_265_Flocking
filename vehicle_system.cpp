@@ -2,6 +2,8 @@
 #include "vehicle.h"
 #include <iostream>
 
+float max(float x, float y);
+float min(float x, float y);
 
 VehicleSystem::VehicleSystem()
 {
@@ -42,7 +44,9 @@ void VehicleSystem::update(sf::RenderWindow& window)
 		Vehicle * vehicle = v[i];
 		sf::Vector2i curBucket = getBucket(vehicle->shape->getPosition());
 
-		sf::Vector2f force = vehicle->createForce(mousePos);
+		vehicle->refresh();
+
+		sf::Vector2f force = 1.2f * separation(vehicle, curBucket) + vehicle->createForce(mousePos);
 		vehicle->applyForce(force);
 		vehicle->update();
 
@@ -116,4 +120,45 @@ void VehicleSystem::removeVehicle()
 		delete temp;
 		temp = nullptr;
 	}
+}
+
+sf::Vector2f VehicleSystem::separation(Vehicle* vehicle, sf::Vector2i b)
+{
+	int left = max(b.x - 1, 0);
+	int right = min(b.x + 1, COLUMNS - 1);
+	int top = max(b.y - 1, 0);
+	int bot = min(b.y + 1, ROWS - 1);
+
+	for (int bx = left; bx <= right; bx++)
+	{
+		for (int by = top; by <= bot; by++)
+		{
+			std::vector<Vehicle*> &vec = grid[bx][by];
+			for (Vehicle* singleVehicle : vec)
+			{
+				if (singleVehicle != vehicle)
+				{
+					vehicle->separation(singleVehicle);
+				}
+			}
+		}
+	}
+	return vehicle->createSeparationForce();
+}
+
+
+float max(float x, float y)
+{
+	if (x >= y)
+		return x;
+	else
+		return y;
+}
+
+float min(float x, float y)
+{
+	if (x <= y)
+		return x;
+	else
+		return y;
 }
