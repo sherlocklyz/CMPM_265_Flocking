@@ -149,6 +149,7 @@ void VehicleSystem::removeVehicle()
 	{
 		Vehicle* temp = v[v.size() - 1];
 		v.pop_back();
+		bucket_remove(getBucket(temp->shape->getPosition()), temp);
 		delete temp;
 		temp = nullptr;
 	}
