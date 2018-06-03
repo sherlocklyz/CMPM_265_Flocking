@@ -49,6 +49,8 @@ private:
 	void separationSwitch();
 	bool canAlignment;
 	void alignmentSwitch();
+	bool canCohesion;
+	void cohesionSwitch();
 
 	float paraTarget;
 	float paraSeparation;

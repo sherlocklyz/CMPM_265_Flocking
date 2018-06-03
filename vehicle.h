@@ -34,6 +34,7 @@ public:
 	void alignment(Vehicle* v);
 	sf::Vector2f createAlignmentForce();
 	void cohesion(Vehicle* v);
+	sf::Vector2f createCohesionForce();
 
 	void refresh();
 

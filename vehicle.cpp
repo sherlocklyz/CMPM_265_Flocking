@@ -20,7 +20,7 @@ Vehicle::Vehicle()
 
 	SeparationR = 60;
 	AlignmentR = 80;
-	CohesionR = 15;
+	CohesionR = 80;
 
 	countSeparation = 0;
 	countAlignment = 0;
@@ -110,6 +110,26 @@ sf::Vector2f Vehicle::createAlignmentForce()
 		sf::Vector2f steerAlignment = sumAlignment - vel;
 		limit(steerAlignment, maxForce);
 		return steerAlignment;
+	}
+	else
+		return sf::Vector2f(0, 0);
+}
+void Vehicle::cohesion(Vehicle* v)
+{
+	sf::Vector2f diff = this->shape->getPosition() - v->shape->getPosition();
+	if (length(diff) < CohesionR)
+	{
+		sumCohesion += v->shape->getPosition();
+		countCohesion++;
+	}
+}
+
+sf::Vector2f Vehicle::createCohesionForce()
+{
+	if (countCohesion > 0)
+	{
+		sumCohesion /= countCohesion;
+		return createTargetForce(sumCohesion);
 	}
 	else
 		return sf::Vector2f(0, 0);

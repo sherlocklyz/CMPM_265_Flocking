@@ -13,6 +13,7 @@ VehicleSystem::VehicleSystem()
 	canTarget = false;
 	canSeparate = false;
 	canAlignment = false;
+	canCohesion = false;
 
 	font.loadFromFile("BERNHC.TTF");
 	text.setFont(font);
@@ -62,6 +63,11 @@ void VehicleSystem::update(sf::RenderWindow& window)
 	{
 		is3Pressed = false;
 		alignmentSwitch();
+	}
+	if (is4Pressed)
+	{
+		is4Pressed = false;
+		cohesionSwitch();
 	}
 
 	for (int i = 0; i < v.size(); i++)
@@ -166,12 +172,13 @@ sf::Vector2f VehicleSystem::flock(Vehicle* vehicle, sf::Vector2i b, sf::Vector2f
 				{
 					vehicle->separation(singleVehicle);
 					vehicle->alignment(singleVehicle);
+					vehicle->cohesion(singleVehicle);
 				}
 			}
 		}
 	}
-	return paraSeparation * vehicle->createSeparationForce() + paraAlignment * vehicle->createAlignmentForce() +
-		   paraTarget * vehicle->createTargetForce(mousePos);
+	return paraTarget * vehicle->createTargetForce(mousePos) + paraSeparation * vehicle->createSeparationForce() +
+		   paraAlignment * vehicle->createAlignmentForce() + paraCohesion * vehicle->createCohesionForce();
 }
 
 void VehicleSystem::targetSwitch()
@@ -220,6 +227,22 @@ void VehicleSystem::alignmentSwitch()
 		canAlignment = true;
 		paraAlignment = 1.0f;
 		text.setString("Alignment On");
+	}
+}
+
+void VehicleSystem::cohesionSwitch()
+{
+	if (canCohesion)
+	{
+		canCohesion = false;
+		paraCohesion = 0;
+		text.setString("Cohesion Off");
+	}
+	else
+	{
+		canCohesion = true;
+		paraCohesion = 0.8f;
+		text.setString("Cohesion On");
 	}
 }
 
