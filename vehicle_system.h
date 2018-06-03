@@ -8,10 +8,10 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Main.hpp>
 
-const float BUCKET_WIDTH = 40;
-const float BUCKET_HEIGHT = 40;
-const int COLUMNS = 32;
-const int ROWS = 18;
+const float BUCKET_WIDTH = 80;
+const float BUCKET_HEIGHT = 80;
+const int COLUMNS = 16;
+const int ROWS = 9;
 
 class Vehicle;
 
@@ -25,6 +25,7 @@ public:
 
 	bool isUpPressed;
 	bool isDownPressed;
+	bool is1Pressed;
 
 private:
 	std::vector<Vehicle*> v;
@@ -38,4 +39,15 @@ private:
 
 	void createVehicle();
 	void removeVehicle();
+
+	bool canSeparate;
+	void separationSwitch();
+
+	float paraSeparation;
+	float paraAlignment;
+	float paraCohesion;
+
+	sf::Text text;
+	sf::Font font;
+	
 };

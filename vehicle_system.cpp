@@ -9,6 +9,14 @@ VehicleSystem::VehicleSystem()
 {
 	Vehicle* vehicle = new Vehicle;
 	v.push_back(vehicle);
+
+	canSeparate = false;
+
+	font.loadFromFile("BERNHC.TTF");
+	text.setFont(font);
+	text.setCharacterSize(30);
+	text.setFillColor(sf::Color::White);
+	text.setPosition(50, 650);
 }
 
 VehicleSystem::~VehicleSystem()
@@ -38,6 +46,11 @@ void VehicleSystem::update(sf::RenderWindow& window)
 		isDownPressed = false;
 		std::cout << v.size();
 	}
+	if (is1Pressed)
+	{
+		is1Pressed = false;
+		separationSwitch();
+	}
 
 	for (int i = 0; i < v.size(); i++)
 	{
@@ -46,7 +59,7 @@ void VehicleSystem::update(sf::RenderWindow& window)
 
 		vehicle->refresh();
 
-		sf::Vector2f force = 1.2f * separation(vehicle, curBucket) + vehicle->createForce(mousePos);
+		sf::Vector2f force = paraSeparation * separation(vehicle, curBucket) + 1.0f * vehicle->createForce(mousePos);
 		vehicle->applyForce(force);
 		vehicle->update();
 
@@ -62,6 +75,7 @@ void VehicleSystem::update(sf::RenderWindow& window)
 void VehicleSystem::render(sf::RenderWindow& window)
 {
 	window.clear(sf::Color::Black);
+	window.draw(text);
 	for (int i = 0; i < v.size(); i++)
 	{
 		v[i]->render(window);
@@ -144,6 +158,22 @@ sf::Vector2f VehicleSystem::separation(Vehicle* vehicle, sf::Vector2i b)
 		}
 	}
 	return vehicle->createSeparationForce();
+}
+
+void VehicleSystem::separationSwitch()
+{
+	if (canSeparate)
+	{
+		canSeparate = false;
+		paraSeparation = 0;
+		text.setString("Separation Off");
+	}
+	else
+	{
+		canSeparate = true;
+		paraSeparation = 3.0f;
+		text.setString("Separation On");
+	}
 }
 
 

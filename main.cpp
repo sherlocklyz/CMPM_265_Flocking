@@ -32,6 +32,8 @@ int main()
 				vs->isUpPressed = true;
 			if (event.type == event.KeyPressed && event.key.code == sf::Keyboard::Down)
 				vs->isDownPressed = true;
+			if (event.type == event.KeyPressed && event.key.code == sf::Keyboard::Num1)
+				vs->is1Pressed = true;
 		}
 		float dt = clock.restart().asSeconds();
 		accumulatedTime += dt;

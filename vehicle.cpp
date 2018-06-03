@@ -18,7 +18,7 @@ Vehicle::Vehicle()
 	vel = sf::Vector2f((rand() % 101 - 50) / 10, (rand() % 101 - 50) / 10);
 	changeLength(vel, rand() % 100 / 20 + 3);
 
-	SeparationR = 40;
+	SeparationR = 80;
 	AlignmentR = 10;
 	CohesionR = 15;
 
