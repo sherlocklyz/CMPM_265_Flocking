@@ -2,8 +2,6 @@
 #include "functions.h"
 #include <iostream>
 
-void inScreen(sf::Vector2f& v, float x, float y);
-
 Vehicle::Vehicle()
 {
 	maxVel = 12.0f;
@@ -20,6 +18,9 @@ Vehicle::Vehicle()
 	vel = sf::Vector2f((rand() % 101 - 50) / 10, (rand() % 101 - 50) / 10);
 	changeLength(vel, rand() % 100 / 20 + 3);
 
+	SeparationR = 20;
+	AlignmentR = 10;
+	CohesionR = 15;
 }
 
 Vehicle::~Vehicle()
@@ -63,14 +64,38 @@ void Vehicle::applyForce(sf::Vector2f f)
 	acc = f;
 }
 
-void inScreen(sf::Vector2f& v, float x, float y)
+void Vehicle::separation(Vehicle* v)
 {
-	if (v.x < 0)
-		v.x += x;
-	if (v.x > x)
-		v.x -= x;
-	if (v.y < 0)
-		v.y += y;
-	if (v.y > y)
-		v.y -= y;
+	sf::Vector2f diff = this->shape->getPosition() - v->shape->getPosition();
+	if (length(diff) < SeparationR)
+	{
+		changeLength(diff, 1 / length(diff));
+		sumSeparation += diff;
+		countSeparation++;
+	}
+}
+
+sf::Vector2f Vehicle::createSeparationForce()
+{
+	if (countSeparation > 0)
+	{
+		changeLength(sumSeparation, maxVel);
+		sf::Vector2f steerSaparation = sumSeparation - vel;
+		limit(steerSaparation, maxForce);
+		return steerSaparation;
+	}
+	else
+	{
+		return sf::Vector2f(0, 0);
+	}
+}
+
+void Vehicle::refresh()
+{
+	sumSeparation = sf::Vector2f(0, 0);
+	sumAlignment = sf::Vector2f(0, 0);
+	sumCohesion = sf::Vector2f(0, 0);
+	countSeparation = 0;
+	countAlignment = 0;
+	countCohesion = 0;
 }

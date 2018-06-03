@@ -21,6 +21,18 @@ public:
 
 	sf::ConvexShape* shape;
 
+	sf::Vector2f sumSeparation;
+	sf::Vector2f sumAlignment;
+	sf::Vector2f sumCohesion;
+	float countSeparation;
+	float countAlignment;
+	float countCohesion;
+	void separation(Vehicle* v);
+	sf::Vector2f createSeparationForce();
+	void alignment(Vehicle* v, float r);
+	void cohesion(Vehicle* v, float r);
+
+	void refresh();
 
 private:
 
@@ -28,9 +40,10 @@ private:
 	sf::Vector2f vel;
 	sf::Vector2f target;
 
-
-	
 	float maxVel;
 	float maxForce;
 	
+	float SeparationR;
+	float AlignmentR;
+	float CohesionR;
 };

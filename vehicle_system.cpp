@@ -1,5 +1,6 @@
 #include "vehicle_system.h"
 #include "vehicle.h"
+#include "functions.h"
 #include <iostream>
 
 
@@ -39,11 +40,13 @@ void VehicleSystem::update(sf::RenderWindow& window)
 
 	for (int i = 0; i < v.size(); i++)
 	{
-		Vehicle * vehicle = v[i];
+		Vehicle* vehicle = v[i];
 		sf::Vector2i curBucket = getBucket(vehicle->shape->getPosition());
+		
+		//vehicle->refresh();
 
-		sf::Vector2f force = vehicle->createForce(mousePos);
-		vehicle->applyForce(force);
+		//sf::Vector2f force = vehicle->createForce(mousePos);
+		//vehicle->applyForce(force);
 		vehicle->update();
 
 		sf::Vector2i newBucket = getBucket(vehicle->shape->getPosition());
@@ -116,4 +119,28 @@ void VehicleSystem::removeVehicle()
 		delete temp;
 		temp = nullptr;
 	}
+}
+
+sf::Vector2f VehicleSystem::separation(Vehicle* vehicle, sf::Vector2i b)
+{
+	int left = max(b.x - 1, 0);
+	int right = min(b.x + 1, COLUMNS - 1);
+	int top = max(b.y - 1, 0);
+	int bot = min(b.y + 1, ROWS - 1);
+
+	for (int bx = left; bx <= right; ++bx)
+	{
+		for (int by = top; by <= bot; ++by)
+		{
+			std::vector<Vehicle*> &vec = grid[bx][by];
+			for (Vehicle* singleVehicle : vec)
+			{
+				if (singleVehicle != vehicle)
+				{
+					vehicle->separation(singleVehicle);
+				}
+			}
+		}
+	}
+	return vehicle->createSeparationForce();
 }
