@@ -1,6 +1,5 @@
 #include "vehicle_system.h"
 #include "vehicle.h"
-#include <iostream>
 
 float max(float x, float y);
 float min(float x, float y);
@@ -41,13 +40,11 @@ void VehicleSystem::update(sf::RenderWindow& window)
 	{
 		createVehicle();
 		isUpPressed = false;
-		std::cout << v.size();
 	}
 	if (isDownPressed)
 	{
 		removeVehicle();
 		isDownPressed = false;
-		std::cout << v.size();
 	}
 	if (is1Pressed)
 	{

@@ -1,6 +1,5 @@
 #include "vehicle.h"
 #include "functions.h"
-#include <iostream>
 
 Vehicle::Vehicle()
 {
