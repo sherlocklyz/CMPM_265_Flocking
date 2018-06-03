@@ -16,10 +16,11 @@ public:
 	void update();
 	void render(sf::RenderWindow& window);
 
-	sf::Vector2f createForce(sf::Vector2f t);
+	sf::Vector2f createTargetForce(sf::Vector2f t);
 	void applyForce(sf::Vector2f f);
 
 	sf::ConvexShape* shape;
+	sf::Vector2f vel;
 
 	sf::Vector2f sumSeparation;
 	sf::Vector2f sumAlignment;
@@ -31,6 +32,7 @@ public:
 	void separation(Vehicle* v);
 	sf::Vector2f createSeparationForce();
 	void alignment(Vehicle* v);
+	sf::Vector2f createAlignmentForce();
 	void cohesion(Vehicle* v);
 
 	void refresh();
@@ -38,7 +40,7 @@ public:
 private:
 
 	sf::Vector2f acc;
-	sf::Vector2f vel;
+
 	sf::Vector2f target;
 
 	float maxVel;

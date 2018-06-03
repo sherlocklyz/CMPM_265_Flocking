@@ -48,6 +48,12 @@ float getRotation(sf::Vector2f v)
 	}
 }
 
+float cosVectors(sf::Vector2f v1, sf::Vector2f v2)
+{
+	float dot = v1.x * v2.x + v1.y * v2.y;
+	return dot / length(v1) / length(v2);
+}
+
 void inScreen(sf::Vector2f& v, float x, float y)
 {
 	if (v.x < 0)

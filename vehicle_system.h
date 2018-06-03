@@ -26,6 +26,9 @@ public:
 	bool isUpPressed;
 	bool isDownPressed;
 	bool is1Pressed;
+	bool is2Pressed;
+	bool is3Pressed;
+	bool is4Pressed;
 
 private:
 	std::vector<Vehicle*> v;
@@ -35,14 +38,19 @@ private:
 	void bucket_add(sf::Vector2i b, Vehicle* vehicle);
 	void bucket_remove(sf::Vector2i b, Vehicle* vehicle);
 
-	sf::Vector2f separation(Vehicle* vehicle, sf::Vector2i b);
+	sf::Vector2f flock(Vehicle* vehicle, sf::Vector2i b, sf::Vector2f mousePos);
 
 	void createVehicle();
 	void removeVehicle();
 
+	bool canTarget;
+	void targetSwitch();
 	bool canSeparate;
 	void separationSwitch();
+	bool canAlignment;
+	void alignmentSwitch();
 
+	float paraTarget;
 	float paraSeparation;
 	float paraAlignment;
 	float paraCohesion;

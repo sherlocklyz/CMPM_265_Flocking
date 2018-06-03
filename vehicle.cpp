@@ -18,8 +18,8 @@ Vehicle::Vehicle()
 	vel = sf::Vector2f((rand() % 101 - 50) / 10, (rand() % 101 - 50) / 10);
 	changeLength(vel, rand() % 100 / 20 + 3);
 
-	SeparationR = 80;
-	AlignmentR = 10;
+	SeparationR = 60;
+	AlignmentR = 80;
 	CohesionR = 15;
 
 	countSeparation = 0;
@@ -52,7 +52,7 @@ void Vehicle::render(sf::RenderWindow& window)
 	window.draw(*shape);
 }
 
-sf::Vector2f Vehicle::createForce(sf::Vector2f t)
+sf::Vector2f Vehicle::createTargetForce(sf::Vector2f t)
 {
 	sf::Vector2f pos = shape->getPosition();
 	sf::Vector2f desired = t - pos;
@@ -87,6 +87,29 @@ sf::Vector2f Vehicle::createSeparationForce()
 		sf::Vector2f steerSeparation = sumSeparation - vel;
 		limit(steerSeparation, maxForce);
 		return steerSeparation;
+	}
+	else
+		return sf::Vector2f(0, 0);
+}
+
+void Vehicle::alignment(Vehicle* v)
+{
+	sf::Vector2f diff = this->shape->getPosition() - v->shape->getPosition();
+	if (length(diff) < AlignmentR && cosVectors(this->vel, -diff) >= 0.5)
+	{
+		sumAlignment += v->vel;
+		countAlignment++;
+	}
+}
+
+sf::Vector2f Vehicle::createAlignmentForce()
+{
+	if (countAlignment > 0)
+	{
+		changeLength(sumAlignment, maxVel);
+		sf::Vector2f steerAlignment = sumAlignment - vel;
+		limit(steerAlignment, maxForce);
+		return steerAlignment;
 	}
 	else
 		return sf::Vector2f(0, 0);

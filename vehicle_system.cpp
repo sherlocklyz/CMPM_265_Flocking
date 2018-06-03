@@ -10,7 +10,9 @@ VehicleSystem::VehicleSystem()
 	Vehicle* vehicle = new Vehicle;
 	v.push_back(vehicle);
 
+	canTarget = false;
 	canSeparate = false;
+	canAlignment = false;
 
 	font.loadFromFile("BERNHC.TTF");
 	text.setFont(font);
@@ -49,7 +51,17 @@ void VehicleSystem::update(sf::RenderWindow& window)
 	if (is1Pressed)
 	{
 		is1Pressed = false;
+		targetSwitch();
+	}
+	if (is2Pressed)
+	{
+		is2Pressed = false;
 		separationSwitch();
+	}
+	if (is3Pressed)
+	{
+		is3Pressed = false;
+		alignmentSwitch();
 	}
 
 	for (int i = 0; i < v.size(); i++)
@@ -59,7 +71,7 @@ void VehicleSystem::update(sf::RenderWindow& window)
 
 		vehicle->refresh();
 
-		sf::Vector2f force = paraSeparation * separation(vehicle, curBucket) + 1.0f * vehicle->createForce(mousePos);
+		sf::Vector2f force = flock(vehicle, curBucket, mousePos);
 		vehicle->applyForce(force);
 		vehicle->update();
 
@@ -109,7 +121,7 @@ void VehicleSystem::bucket_remove(sf::Vector2i b, Vehicle* v)
 {
 	std::vector <Vehicle*> &vec = grid[b.x][b.y];
 
-	for (int i = 0; i < vec.size(); ++i)
+	for (int i = 0; i < vec.size(); i++)
 	{
 		if (vec[i] == v)
 		{
@@ -136,7 +148,7 @@ void VehicleSystem::removeVehicle()
 	}
 }
 
-sf::Vector2f VehicleSystem::separation(Vehicle* vehicle, sf::Vector2i b)
+sf::Vector2f VehicleSystem::flock(Vehicle* vehicle, sf::Vector2i b, sf::Vector2f mousePos)
 {
 	int left = max(b.x - 1, 0);
 	int right = min(b.x + 1, COLUMNS - 1);
@@ -153,11 +165,29 @@ sf::Vector2f VehicleSystem::separation(Vehicle* vehicle, sf::Vector2i b)
 				if (singleVehicle != vehicle)
 				{
 					vehicle->separation(singleVehicle);
+					vehicle->alignment(singleVehicle);
 				}
 			}
 		}
 	}
-	return vehicle->createSeparationForce();
+	return paraSeparation * vehicle->createSeparationForce() + paraAlignment * vehicle->createAlignmentForce() +
+		   paraTarget * vehicle->createTargetForce(mousePos);
+}
+
+void VehicleSystem::targetSwitch()
+{
+	if (canTarget)
+	{
+		canTarget = false;
+		paraTarget = 0;
+		text.setString("Target Track Off");
+	}
+	else
+	{
+		canTarget = true;
+		paraTarget = 1.0f;
+		text.setString("Target Track On");
+	}
 }
 
 void VehicleSystem::separationSwitch()
@@ -171,11 +201,27 @@ void VehicleSystem::separationSwitch()
 	else
 	{
 		canSeparate = true;
-		paraSeparation = 3.0f;
+		paraSeparation = 1.5f;
 		text.setString("Separation On");
 	}
 }
 
+
+void VehicleSystem::alignmentSwitch()
+{
+	if (canAlignment)
+	{
+		canAlignment = false;
+		paraAlignment = 0;
+		text.setString("Alignment Off");
+	}
+	else
+	{
+		canAlignment = true;
+		paraAlignment = 1.0f;
+		text.setString("Alignment On");
+	}
+}
 
 float max(float x, float y)
 {
